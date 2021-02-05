@@ -85,8 +85,8 @@ class QuadLinkedList:
         new_quad_list = cls()
 
         # Create the Header Nodes
-        for i in range(len(matrix[0])):
-            new_quad_list.__append_header(QuadNode(f"Header at pos: {i}"))
+        for i in range(len(matrix[0]) + 1):
+            new_quad_list.__append_header(QuadNode(f"Header at pos: {i-1}" if i != 0 else f"Root node"))
 
         # Append the matrix elements
         for index, row in enumerate(matrix):
@@ -144,7 +144,7 @@ class QuadLinkedList:
             for _ in range(position):
                 head_node = head_node.right_node
 
-            return head_node
+            return head_node.right_node
 
         column_node: QuadNode = __get_header_node(header_column_position)
 
