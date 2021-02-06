@@ -6,7 +6,6 @@ from typing import Optional, List
 class QuadNode:
     def __init__(self, payload, header_node=None, right_node=None,
                  left_node=None, top_node=None, bottom_node=None):
-
         # Contains information on the QuadNode
         self.payload = payload
 
@@ -35,48 +34,6 @@ class QuadLinkedList:
     def __init__(self):
         self.head_node: Optional[QuadNode] = None
 
-    def to_matrix(self) -> List[List[bool]]:
-
-        def __create_column(current_column, matrix, header_node):
-            # For each column append all of the column nodes to the new matrix
-            current_node = header_node.bottom_node
-
-            while current_node is not header_node:
-                matrix[current_node.payload][current_column] = True
-
-                current_node = current_node.bottom_node
-            current_column += 1
-
-        num_columns = self.__count_columns()
-        num_rows = self.__count_rows()
-        original_matrix: List[List[bool]] = [[False] * num_columns for _ in range(num_rows)]
-        column_node = self.head_node
-        for column in range(num_columns):
-            __create_column(column, original_matrix, column_node)
-            column_node = column_node.right_node
-
-        return original_matrix
-
-    def __count_columns(self) -> int:
-        count = 1
-        column_node = self.head_node.left_node
-        while column_node is not self.head_node:
-            count += 1
-            column_node = column_node.left_node
-        return count
-
-    def __count_rows(self) -> int:
-
-        column_node = self.head_node.left_node
-        num_rows = column_node.top_node.payload
-
-        # Go over all the columns
-        while column_node is not self.head_node:
-            if column_node.top_node.payload > num_rows:
-                num_rows = column_node.top_node.payload
-            column_node = column_node.left_node
-        return num_rows + 1
-
     @classmethod
     def from_matrix(cls, matrix: List[List[bool]]) -> QuadLinkedList:
 
@@ -87,8 +44,8 @@ class QuadLinkedList:
 
         # Create the Header Nodes
         for i in range(len(matrix[0]) + 1):
-            # Have the payload contain information about the head column
-            new_quad_list.__append_header(QuadNode(f"Header at pos: {i-1}" if i != 0 else f"Root node"))
+            # Have the payload contain the column information about the header nodes
+            new_quad_list.__append_header(QuadNode(f"Column with value {i - 1}" if i != 0 else f"Root node"))
 
         # Append the matrix elements
         for index, row in enumerate(matrix):

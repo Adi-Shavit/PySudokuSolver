@@ -1,4 +1,3 @@
-from pprint import pprint
 from typing import List, Optional
 
 from src.algorithm_x import ExactCoverSolver
@@ -26,7 +25,8 @@ def convert_to_sudoku(solution_matrix: List[QuadNode], dimensions) -> List[List[
     solution_board: Optional[List[List[Optional[int]]]] = [[None for _ in range(dimensions)] for _ in range(dimensions)]
 
     for node in solution_matrix:
-        solution_board[(node.payload // (dimensions**2))][(node.payload // dimensions) % dimensions] = (node.payload % dimensions) + 1
+        solution_board[(node.payload // (dimensions ** 2))][(node.payload // dimensions) % dimensions] = (
+                                                                                                                     node.payload % dimensions) + 1
     return solution_board
 
 
@@ -34,6 +34,7 @@ def cover_initial_state(unsolved_board: List[List[int]], solver: ExactCoverSolve
     """
     This function covers the initial states of the Sudoku board.
     """
+
     def get_row_node(number, board_row, board_column) -> QuadNode:
         """
         Given the number, the row in the board, and the column in the board, this function navigates to the correct
@@ -59,13 +60,3 @@ def cover_initial_state(unsolved_board: List[List[int]], solver: ExactCoverSolve
 
     for node in initial_nodes:
         solver.select_initial_node(node)
-
-
-if __name__ == '__main__':
-    board = [
-        [0, 2, 3, 0],
-        [0, 0, 0, 0],
-        [3, 4, 0, 2],
-        [2, 0, 0, 0],
-    ]
-    pprint(solve(board))

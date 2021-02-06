@@ -107,25 +107,3 @@ def uncover(column_node: QuadNode):
 
     column_node.right_node.left_node = column_node
     column_node.left_node.right_node = column_node
-
-
-if __name__ == '__main__':
-    # sample_board = [
-    #     [1, 0, 0, 1, 0, 0, 1],
-    #     [1, 0, 0, 1, 0, 0, 0],
-    #     [0, 0, 0, 1, 1, 0, 1],
-    #     [0, 0, 1, 0, 1, 1, 0],
-    #     [0, 1, 1, 0, 0, 1, 1],
-    #     [0, 1, 0, 0, 0, 0, 1],
-    # ]
-    sample_board = [
-        [1, 0, 0, 1],
-        [1, 0, 0, 0],
-        [0, 1, 1, 0],
-        [1, 0, 1, 1],
-    ]
-    bool_mat = [list(map(bool, x)) for x in sample_board]
-    exc = ExactCoverSolver(bool_mat)
-    exc.select_initial_node(exc.sparse_list.head_node.right_node.bottom_node)
-    print(exc.algorithm_x())
-    # pprint([list(map(int, x)) for x in exc.algorithm_x()])

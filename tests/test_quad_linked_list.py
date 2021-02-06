@@ -10,16 +10,19 @@ def test_quad_linked_list_from_matrix_method_creates_valid_quad_list():
     ql = QuadLinkedList.from_matrix(matrix)
 
     assert ql.head_node.right_node.bottom_node.right_node is ql.head_node.right_node.right_node.right_node.bottom_node
-    assert ql.head_node.bottom_node.right_node.top_node is ql.head_node.right_node.right_node
-    assert ql.head_node.top_node.left_node is ql.head_node.left_node.top_node
+    assert ql.head_node.right_node.bottom_node.right_node.top_node is ql.head_node.right_node.right_node.right_node
+    assert ql.head_node.right_node.top_node.left_node is ql.head_node.left_node.top_node
 
 
 def test_quad_linked_list_edges_are_circular():
     ql = QuadLinkedList.from_matrix([[True, False]])
-    assert ql.head_node.right_node is ql.head_node.left_node
+    assert ql.head_node.right_node.right_node is ql.head_node.left_node
 
-    assert ql.head_node.right_node.top_node is ql.head_node.right_node.bottom_node is ql.head_node.right_node
+    assert ql.head_node.left_node.top_node is ql.head_node.left_node.bottom_node is ql.head_node.left_node
 
-    assert ql.head_node.bottom_node is ql.head_node.top_node is not ql.head_node
-    assert ql.head_node.bottom_node.bottom_node is ql.head_node
-    assert ql.head_node.bottom_node is ql.head_node.top_node
+    assert ql.head_node.right_node.bottom_node is ql.head_node.right_node.top_node is not ql.head_node
+    assert ql.head_node.right_node.bottom_node.bottom_node is ql.head_node.right_node
+    assert ql.head_node.right_node.bottom_node is ql.head_node.right_node.top_node
+
+    assert ql.head_node.header_node is ql.head_node
+    assert ql.head_node.right_node.header_node is ql.head_node.right_node
