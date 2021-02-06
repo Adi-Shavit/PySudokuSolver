@@ -1,4 +1,3 @@
-from pprint import pprint
 from typing import Optional, List
 
 from src.quad_linked_list import QuadNode, QuadLinkedList
@@ -12,19 +11,20 @@ class ExactCoverSolver:
         self.binary_matrix = binary_matrix
         self.sparse_list = QuadLinkedList.from_matrix(binary_matrix)
 
-    def get_exact_cover_board(self) -> List[List[bool]]:
+    def get_exact_cover_solution(self) -> List[QuadNode]:
         """
-        This function produces the exact cover board based on the solutions found at the end of the run
+        This function returns a list of nodes where each node is a row in the exact cover board solution.
         """
-        exact_cover_board = []
+        actual_solution = []
         for n in self.potential_solutions:
-            exact_cover_board.append(self.binary_matrix[n.payload])
-        return exact_cover_board
+            actual_solution.append(n)
+        return actual_solution
 
-    def select_initial_nodes(self, row_node: QuadNode):
+    def select_initial_node(self, row_node: QuadNode):
         """
         This function receives a node and selects it.
         It makes sure that the solution will contain the specified node in the solution.
+        It makes sure that the row the node belongs to will be in the exact cover board.
         """
         cover(row_node.header_node)
         right_node = row_node.right_node
@@ -33,15 +33,14 @@ class ExactCoverSolver:
             right_node = right_node.right_node
         self.potential_solutions.append(row_node)
 
-    def algorithm_x(self) -> Optional[List[List[bool]]]:
+    def algorithm_x(self) -> Optional[List[QuadNode]]:
         """
         This function applies algorithm x to the sparse list. It produces only one solution, even if many can be found.
         """
         exact_cover_board = None
         if self.sparse_list.head_node.left_node is self.sparse_list.head_node and self.sparse_list.head_node.right_node is self.sparse_list.head_node:
-            print("---- SOLVED ----")
             self.finished = True
-            return self.get_exact_cover_board()
+            return self.get_exact_cover_solution()
 
         column: QuadNode = choose_column(self.sparse_list)
         cover(column)
@@ -75,6 +74,9 @@ def choose_column(cover_board: QuadLinkedList) -> QuadNode:
 
 
 def cover(column_node: QuadNode):
+    """
+    This function performs the cover logic using the dancing links trick.
+    """
     column_node.right_node.left_node = column_node.left_node
     column_node.left_node.right_node = column_node.right_node
 
@@ -90,6 +92,9 @@ def cover(column_node: QuadNode):
 
 
 def uncover(column_node: QuadNode):
+    """
+    This function performs the uncovers a previously covered column.
+    """
     row_node = column_node.top_node
     while row_node is not column_node:
         left_node = row_node.left_node
@@ -121,6 +126,6 @@ if __name__ == '__main__':
     ]
     bool_mat = [list(map(bool, x)) for x in sample_board]
     exc = ExactCoverSolver(bool_mat)
-    exc.select_initial_nodes(exc.sparse_list.head_node.right_node.bottom_node)
+    exc.select_initial_node(exc.sparse_list.head_node.right_node.bottom_node)
     print(exc.algorithm_x())
     # pprint([list(map(int, x)) for x in exc.algorithm_x()])

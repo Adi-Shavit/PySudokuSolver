@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import Optional, List
 
 
@@ -6,7 +7,7 @@ class QuadNode:
     def __init__(self, payload, header_node=None, right_node=None,
                  left_node=None, top_node=None, bottom_node=None):
 
-        # Contains the row of the QuadNode
+        # Contains information on the QuadNode
         self.payload = payload
 
         # The head column node this node belongs to
@@ -86,12 +87,14 @@ class QuadLinkedList:
 
         # Create the Header Nodes
         for i in range(len(matrix[0]) + 1):
+            # Have the payload contain information about the head column
             new_quad_list.__append_header(QuadNode(f"Header at pos: {i-1}" if i != 0 else f"Root node"))
 
         # Append the matrix elements
         for index, row in enumerate(matrix):
             for position, node in enumerate(row):
                 if node:
+                    # Have the payload contain the nodes row
                     new_quad_list.__add_node(position, QuadNode(index))
             new_quad_list.__fix_neighbors()
 
